@@ -45,7 +45,6 @@ router.post("/", function (req, res, next) {
 
 // update post likes by id
 router.put("/like", function (req, res, next) {
-  console.log(req.body);
   const { id, liked } = req.body;
   if (!id) {
     res.status(400).send("Invalid request");
@@ -58,8 +57,8 @@ router.put("/like", function (req, res, next) {
         return;
       }
       liked ? post.increment("likes") : post.decrement("likes");
-      const { id, likes } = post;
-      res.status(200).send({ id, likes });
+      const { id } = post;
+      res.status(200).send({ id });
     })
     .catch((err) => {
       res.status(500).send(err);

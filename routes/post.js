@@ -10,14 +10,14 @@ router.get("/", function (req, res, next) {
       {
         model: Reply,
         as: "Replies",
-        attributes: ["id", "postId", "name", "detail", "likes"],
+        attributes: ["id", "postId", "name", "details", "likes"],
       },
     ],
     order: [["id", "DESC"]],
   }).then((posts) => {
     const postsData = posts.map((post) => {
-      const { id, name, detail, likes, Replies } = post;
-      return { id, name, detail, likes, Replies };
+      const { id, name, details, likes, Replies } = post;
+      return { id, name, details, likes, Replies };
     });
     res.status(201).send(postsData);
   });
@@ -25,18 +25,18 @@ router.get("/", function (req, res, next) {
 
 /* POST post page. */
 router.post("/", function (req, res, next) {
-  const { name, detail } = req.body;
-  if (!name || !detail) {
+  const { name, details } = req.body;
+  if (!name || !details) {
     res.status(400).send("Invalid request");
     return;
   }
   Post.create({
     name,
-    detail,
+    details,
   })
     .then((post) => {
-      const { id, name, detail, likes } = post;
-      res.status(201).send({ id, name, detail, likes });
+      const { id, name, details, likes } = post;
+      res.status(201).send({ id, name, details, likes, reply: [] });
     })
     .catch((err) => {
       res.status(500).send(err);
